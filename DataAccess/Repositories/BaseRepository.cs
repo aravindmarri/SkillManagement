@@ -1,5 +1,6 @@
 ﻿using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
 {
@@ -16,6 +17,13 @@ namespace DataAccess.Repositories
         {
             var set = _context.Set<T>();
             return set.AsNoTracking().ToList();
+        }
+
+        public T FindBy(Expression<Func<T, bool>> predicate)
+        {
+            var set = _context.Set<T>().Where(predicate);
+
+            return set.AsNoTracking().FirstOrDefault();
         }
 
         public void Add(T entity)
